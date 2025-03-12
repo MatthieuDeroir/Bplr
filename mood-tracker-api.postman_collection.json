@@ -1,0 +1,1222 @@
+{
+  "info": {
+    "_postman_id": "b5c7a3e4-f8eb-4a5c-9d6d-c1d4df8c2fae",
+    "name": "Mood Tracker API",
+    "description": "API for tracking mood and mental health metrics with dynamic custom scales",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "demo_user_id",
+      "value": "64b31607-1717-44d4-8344-5898a4119bd9",
+      "type": "string"
+    },
+    {
+      "key": "default_formula_id",
+      "value": "b0c0b3b8-c8a3-44c0-8a9d-2c53813d882e",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "register"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "login"
+              ]
+            },
+            "description": "Login with existing credentials"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Demo User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"demo@example.com\",\n    \"password\": \"demopassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "login"
+              ]
+            },
+            "description": "Login with demo user credentials"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "description": "Get the current user's profile"
+          },
+          "response": []
+        }
+      ],
+      "description": "User authentication and profile management"
+    },
+    {
+      "name": "Scales",
+      "item": [
+        {
+          "name": "Get All Scales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (Array.isArray(jsonData) && jsonData.length > 0) {",
+                  "        // Store the first custom scale ID for future requests",
+                  "        const customScales = jsonData.filter(scale => !scale.isDefault);",
+                  "        if (customScales.length > 0) {",
+                  "            pm.collectionVariables.set('custom_scale_id', customScales[0].id);",
+                  "            console.log('Custom scale ID set:', customScales[0].id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales"
+              ]
+            },
+            "description": "Get all scales available to the user"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Scale",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData && jsonData.id) {",
+                  "        pm.collectionVariables.set('custom_scale_id', jsonData.id);",
+                  "        console.log('Custom scale ID set:', jsonData.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Energy Level\",\n    \"description\": \"Scale for tracking daily energy levels\",\n    \"minValue\": 0,\n    \"maxValue\": 10,\n    \"isActive\": true,\n    \"levels\": [\n        { \"level\": 0, \"description\": \"Complete exhaustion, unable to get out of bed\" },\n        { \"level\": 1, \"description\": \"Extremely fatigued, basic tasks require tremendous effort\" },\n        { \"level\": 2, \"description\": \"Very tired, can only manage essential activities\" },\n        { \"level\": 3, \"description\": \"Low energy, tasks take longer than usual\" },\n        { \"level\": 4, \"description\": \"Below average energy, noticeable fatigue\" },\n        { \"level\": 5, \"description\": \"Moderate energy, can function but not at full capacity\" },\n        { \"level\": 6, \"description\": \"Slightly above average energy\" },\n        { \"level\": 7, \"description\": \"Good energy level, productive and active\" },\n        { \"level\": 8, \"description\": \"High energy, very productive and motivated\" },\n        { \"level\": 9, \"description\": \"Very energetic, able to accomplish a lot without fatigue\" },\n        { \"level\": 10, \"description\": \"Extremely energetic, maximum productivity and vitality\" }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales"
+              ]
+            },
+            "description": "Create a new custom scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Humeur",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/9e28a52b-1a43-456d-be3d-85ec1d8d7dc5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "9e28a52b-1a43-456d-be3d-85ec1d8d7dc5"
+              ]
+            },
+            "description": "Get the Mood (Humeur) scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Irritabilité",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/a3cfcd9b-2608-4dce-a576-b0cab5894af5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "a3cfcd9b-2608-4dce-a576-b0cab5894af5"
+              ]
+            },
+            "description": "Get the Irritability (Irritabilité) scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Confiance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f"
+              ]
+            },
+            "description": "Get the Confidence (Confiance) scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Extraversion",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/d9b93e39-2d19-4af1-aae6-6895522bf81a",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "d9b93e39-2d19-4af1-aae6-6895522bf81a"
+              ]
+            },
+            "description": "Get the Extraversion scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Bien-être",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/f5a28535-76db-4aec-80c4-303c1497a707",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "f5a28535-76db-4aec-80c4-303c1497a707"
+              ]
+            },
+            "description": "Get the Well-being (Bien-être) scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scale By ID - Custom",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/{{custom_scale_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "{{custom_scale_id}}"
+              ]
+            },
+            "description": "Get a custom scale by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Scale",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Energy Level\",\n    \"description\": \"Updated scale for tracking daily energy levels\",\n    \"isActive\": true,\n    \"levels\": [\n        { \"level\": 0, \"description\": \"Complete exhaustion, unable to get out of bed\" },\n        { \"level\": 1, \"description\": \"Extremely fatigued, basic tasks require tremendous effort\" },\n        { \"level\": 2, \"description\": \"Very tired, can only manage essential activities\" },\n        { \"level\": 3, \"description\": \"Low energy, tasks take longer than usual\" },\n        { \"level\": 4, \"description\": \"Below average energy, noticeable fatigue\" },\n        { \"level\": 5, \"description\": \"Moderate energy, can function but not at full capacity\" },\n        { \"level\": 6, \"description\": \"Slightly above average energy\" },\n        { \"level\": 7, \"description\": \"Good energy level, productive and active\" },\n        { \"level\": 8, \"description\": \"High energy, very productive and motivated\" },\n        { \"level\": 9, \"description\": \"Very energetic, able to accomplish a lot without fatigue\" },\n        { \"level\": 10, \"description\": \"Extremely energetic, maximum productivity and vitality\" }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/{{custom_scale_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "{{custom_scale_id}}"
+              ]
+            },
+            "description": "Update a custom scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Scale",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scales/{{custom_scale_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "scales",
+                "{{custom_scale_id}}"
+              ]
+            },
+            "description": "Delete a custom scale"
+          },
+          "response": []
+        }
+      ],
+      "description": "Management of mood scale definitions"
+    },
+    {
+      "name": "Mood Entries",
+      "item": [
+        {
+          "name": "Get All Mood Entries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (Array.isArray(jsonData) && jsonData.length > 0) {",
+                  "        pm.collectionVariables.set('mood_entry_id', jsonData[0].id);",
+                  "        console.log('Mood entry ID set:', jsonData[0].id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries?limit=10&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of entries to return"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset"
+                }
+              ]
+            },
+            "description": "Get all mood entries for the user"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Mood Entry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData && jsonData.id) {",
+                  "        pm.collectionVariables.set('mood_entry_id', jsonData.id);",
+                  "        console.log('Mood entry ID set:', jsonData.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Set current timestamp as entry date",
+                  "pm.variables.set(\"current_date\", new Date().toISOString());"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"entryDate\": \"{{current_date}}\",\n    \"comment\": \"Feeling good today, work went well\",\n    \"medication\": \"Morning medication as prescribed\",\n    \"sleepHours\": 7.5,\n    \"scaleValues\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"value\": 8 },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"value\": 3 },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"value\": 7 },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"value\": 6 },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"value\": 8 }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries"
+              ]
+            },
+            "description": "Create a new mood entry"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Mood Entry with Custom Scale",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Set current timestamp as entry date",
+                  "pm.variables.set(\"current_date\", new Date().toISOString());"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"entryDate\": \"{{current_date}}\",\n    \"comment\": \"Feeling okay today but low energy\",\n    \"medication\": \"Morning medication as prescribed\",\n    \"sleepHours\": 6.5,\n    \"scaleValues\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"value\": 6 },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"value\": 5 },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"value\": 5 },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"value\": 4 },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"value\": 5 },\n        { \"scaleId\": \"{{custom_scale_id}}\", \"value\": 4 }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries"
+              ]
+            },
+            "description": "Create a mood entry including the custom scale"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mood Entry By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries/{{mood_entry_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries",
+                "{{mood_entry_id}}"
+              ]
+            },
+            "description": "Get a specific mood entry by its ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Mood Entry",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"comment\": \"Updated comment - feeling mostly good today, work went well\",\n    \"medication\": \"Morning medication as prescribed\",\n    \"sleepHours\": 7.5,\n    \"scaleValues\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"value\": 8 },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"value\": 4 },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"value\": 7 },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"value\": 6 },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"value\": 7 }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries/{{mood_entry_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries",
+                "{{mood_entry_id}}"
+              ]
+            },
+            "description": "Update an existing mood entry"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Mood Entry",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood-entries/{{mood_entry_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood-entries",
+                "{{mood_entry_id}}"
+              ]
+            },
+            "description": "Delete a mood entry"
+          },
+          "response": []
+        }
+      ],
+      "description": "Management of mood entry records"
+    },
+    {
+      "name": "Stability Formulas",
+      "item": [
+        {
+          "name": "Get All Formulas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (Array.isArray(jsonData) && jsonData.length > 0) {",
+                  "        // Store the first custom formula ID for future requests",
+                  "        const customFormulas = jsonData.filter(formula => !formula.isDefault);",
+                  "        if (customFormulas.length > 0) {",
+                  "            pm.collectionVariables.set('custom_formula_id', customFormulas[0].id);",
+                  "            console.log('Custom formula ID set:', customFormulas[0].id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas"
+              ]
+            },
+            "description": "Get all stability formulas for the user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Formula",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas",
+                "active"
+              ]
+            },
+            "description": "Get the currently active stability formula"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Default Formula",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas/b0c0b3b8-c8a3-44c0-8a9d-2c53813d882e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas",
+                "b0c0b3b8-c8a3-44c0-8a9d-2c53813d882e"
+              ]
+            },
+            "description": "Get the default stability formula"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Formula",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData && jsonData.id) {",
+                  "        pm.collectionVariables.set('custom_formula_id', jsonData.id);",
+                  "        console.log('Custom formula ID set:', jsonData.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Custom formula with higher weights for mood and well-being\",\n    \"isActive\": true,\n    \"scaleWeights\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"weight\": 1.5, \"isInverted\": false },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"weight\": 1.0, \"isInverted\": true },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"weight\": 0.8, \"isInverted\": false },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"weight\": 0.5, \"isInverted\": false },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"weight\": 1.2, \"isInverted\": false }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas"
+              ]
+            },
+            "description": "Create a new stability formula"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Custom Formula",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas/{{custom_formula_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas",
+                "{{custom_formula_id}}"
+              ]
+            },
+            "description": "Get a custom formula by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Formula",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Updated custom formula with adjusted weights\",\n    \"isActive\": true,\n    \"scaleWeights\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"weight\": 2.0, \"isInverted\": false },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"weight\": 1.2, \"isInverted\": true },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"weight\": 1.0, \"isInverted\": false },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"weight\": 0.4, \"isInverted\": false },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"weight\": 1.5, \"isInverted\": false }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas/{{custom_formula_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas",
+                "{{custom_formula_id}}"
+              ]
+            },
+            "description": "Update an existing stability formula"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Formula",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stability-formulas/{{custom_formula_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stability-formulas",
+                "{{custom_formula_id}}"
+              ]
+            },
+            "description": "Delete a stability formula"
+          },
+          "response": []
+        }
+      ],
+      "description": "Management of stability calculation formulas"
+    },
+    {
+      "name": "AI Assessment",
+      "item": [
+        {
+          "name": "Send Chat Message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"I'm feeling pretty anxious today and didn't sleep well last night.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ai-assessment/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai-assessment",
+                "chat"
+              ]
+            },
+            "description": "Send a message to the AI chat assistant"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Assessment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"conversation\": [\n        { \"role\": \"user\", \"content\": \"I'm feeling pretty anxious today and didn't sleep well last night.\" },\n        { \"role\": \"assistant\", \"content\": \"I'm sorry to hear that. Can you tell me more about what's making you anxious?\" },\n        { \"role\": \"user\", \"content\": \"I have a big presentation at work tomorrow and I'm worried about it. I kept thinking about it all night.\" },\n        { \"role\": \"assistant\", \"content\": \"That sounds stressful. How would you rate your anxiety level on a scale of 0-10?\" },\n        { \"role\": \"user\", \"content\": \"Probably around a 7 or 8. It's pretty bad today.\" }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ai-assessment/assess",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai-assessment",
+                "assess"
+              ]
+            },
+            "description": "Generate a mood assessment from a conversation history"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Assessment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"scaleValues\": [\n        { \"scaleId\": \"9e28a52b-1a43-456d-be3d-85ec1d8d7dc5\", \"value\": 5 },\n        { \"scaleId\": \"a3cfcd9b-2608-4dce-a576-b0cab5894af5\", \"value\": 6 },\n        { \"scaleId\": \"c7f09f47-c71f-4d2e-9e06-b53c6e9dec2f\", \"value\": 4 },\n        { \"scaleId\": \"d9b93e39-2d19-4af1-aae6-6895522bf81a\", \"value\": 3 },\n        { \"scaleId\": \"f5a28535-76db-4aec-80c4-303c1497a707\", \"value\": 3 }\n    ],\n    \"sleepHours\": 5.5,\n    \"comment\": \"Feeling anxious about work presentation, poor sleep\",\n    \"medication\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ai-assessment/save-assessment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai-assessment",
+                "save-assessment"
+              ]
+            },
+            "description": "Save an AI-generated assessment as a mood entry"
+          },
+          "response": []
+        }
+      ],
+      "description": "AI-assisted mood assessment"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+erDiagram
+    User {
+        string id PK
+        string email
+        string username
+        string passwordHash
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    Scale {
+        string id PK
+        string name
+        string description
+        boolean isDefault
+        string userId FK
+        int minValue
+        int maxValue
+        boolean isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    ScaleLevel {
+        string id PK
+        string scaleId FK
+        int level
+        string description
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    MoodEntry {
+        string id PK
+        string userId FK
+        datetime entryDate
+        string comment
+        string medication
+        float sleepHours
+        float stabilityScore
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    MoodScaleValue {
+        string id PK
+        string moodEntryId FK
+        string scaleId FK
+        int value
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    StabilityFormula {
+        string id PK
+        string userId FK
+        string formula
+        string description
+        boolean isDefault
+        boolean isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    ScaleWeight {
+        string id PK
+        string stabilityFormulaId FK
+        string scaleId FK
+        float weight
+        boolean isInverted
+        datetime createdAt
+    }
+    
+    User ||--o{ Scale : "creates"
+    User ||--o{ MoodEntry : "creates"
+    User ||--o{ StabilityFormula : "defines"
+    
+    Scale ||--o{ ScaleLevel : "has"
+    Scale ||--o{ MoodScaleValue : "used in"
+    
+    MoodEntry ||--o{ MoodScaleValue : "contains"
+    
+    StabilityFormula ||--o{ ScaleWeight : "uses"
+    Scale ||--o{ ScaleWeight : "weighted in"

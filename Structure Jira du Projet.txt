@@ -1,0 +1,636 @@
+Structure Jira du Projet Bplr
+Épopée 1: Authentification et Gestion des Comptes Utilisateurs
+
+BPLR-E1: Mettre en œuvre un système sécurisé d'authentification et de gestion des comptes utilisateurs
+
+Description: Cette épopée couvre la conception et l'implémentation complète du système d'authentification, incluant l'inscription, la connexion, la gestion des profils, et la sécurité des données utilisateur. Elle établit la fondation d'identité et d'accès pour toute l'application.
+Récits Utilisateur:
+
+    BPLR-US1: En tant que nouvel utilisateur, je veux créer un compte afin de commencer à suivre mon humeur Description: L'utilisateur doit pouvoir s'inscrire facilement à l'application en fournissant des informations de base (email, nom d'utilisateur, mot de passe). Le système doit valider ces informations, sécuriser les données sensibles et créer un compte utilisateur fonctionnel avec les autorisations appropriées.
+        BPLR-T1: Concevoir et implémenter le contrôleur et le service d'inscription utilisateur Description: Développer les composants backend responsables de la validation et du traitement des demandes d'inscription.
+            BPLR-ST1.1: Créer l'interface du service d'inscription dans la couche application
+            BPLR-ST1.2: Implémenter la validation des données d'inscription
+            BPLR-ST1.3: Développer la logique de gestion des utilisateurs existants
+            BPLR-ST1.4: Mettre en place la journalisation des tentatives d'inscription
+        BPLR-T2: Créer les mécanismes de hachage des mots de passe et de sécurité Description: Implémenter les algorithmes de hachage sécurisés pour protéger les mots de passe et établir les pratiques de sécurité conformes aux normes OWASP.
+            BPLR-ST2.1: Implémenter l'algorithme de hachage Argon2id
+            BPLR-ST2.2: Créer le système de génération et stockage de sel unique
+            BPLR-ST2.3: Mettre en place les politiques de complexité des mots de passe
+            BPLR-ST2.4: Développer les tests unitaires pour les fonctions de sécurité
+        BPLR-T3: Implémenter le processus de vérification par email Description: Créer un système fiable pour vérifier l'identité des utilisateurs via email, incluant la génération de tokens sécurisés et la gestion des confirmations.
+            BPLR-ST3.1: Développer le service d'envoi d'emails de vérification
+            BPLR-ST3.2: Créer le système de génération et validation de tokens temporaires
+            BPLR-ST3.3: Implémenter le processus de confirmation d'email
+            BPLR-ST3.4: Gérer la logique des comptes partiellement activés
+        BPLR-T4: Concevoir et implémenter l'interface utilisateur d'inscription Description: Créer une interface intuitive et responsive pour le processus d'inscription, avec validation côté client et retour visuel approprié.
+            BPLR-ST4.1: Concevoir les maquettes du formulaire d'inscription
+            BPLR-ST4.2: Développer les composants de formulaire avec validation client
+            BPLR-ST4.3: Implémenter la gestion des erreurs et rétroaction utilisateur
+            BPLR-ST4.4: Créer la page de confirmation post-inscription
+    BPLR-US2: En tant qu'utilisateur, je veux me connecter de façon sécurisée pour accéder à mes données d'humeur Description: L'utilisateur doit pouvoir s'authentifier de manière sécurisée avec son email/nom d'utilisateur et mot de passe. Le système doit gérer les sessions utilisateur, prévenir les attaques courantes et maintenir la connexion de manière appropriée sur les différents appareils.
+        BPLR-T5: Implémenter le mécanisme d'authentification JWT Description: Développer l'infrastructure complète d'authentification basée sur les tokens JWT pour une authentification stateless sécurisée.
+            BPLR-ST5.1: Configurer la génération de tokens JWT sécurisés
+            BPLR-ST5.2: Implémenter le système de signature et validation des tokens
+            BPLR-ST5.3: Définir la structure des claims et leur encodage
+            BPLR-ST5.4: Mettre en place les mécanismes d'expiration et de sécurité
+        BPLR-T6: Créer les endpoints du contrôleur de connexion Description: Développer les API endpoints nécessaires pour gérer le processus d'authentification, la validation des identifiants et l'émission de tokens.
+            BPLR-ST6.1: Implémenter l'endpoint de connexion principale
+            BPLR-ST6.2: Développer la logique de validation des identifiants
+            BPLR-ST6.3: Mettre en place la détection et prévention des attaques par force brute
+            BPLR-ST6.4: Créer le système de journalisation des authentifications
+        BPLR-T7: Implémenter la fonctionnalité de rafraîchissement des tokens Description: Créer un système robuste pour rafraîchir les tokens d'authentification de manière sécurisée sans nécessiter de reconnexion fréquente de l'utilisateur.
+            BPLR-ST7.1: Concevoir l'architecture de tokens d'accès et de rafraîchissement
+            BPLR-ST7.2: Implémenter l'endpoint de rafraîchissement de token
+            BPLR-ST7.3: Développer la logique de validation et révocation des tokens
+            BPLR-ST7.4: Créer le mécanisme de rotation des tokens de rafraîchissement
+        BPLR-T8: Concevoir et implémenter l'interface utilisateur de connexion avec validations appropriées Description: Créer une interface utilisateur intuitive pour le processus de connexion avec validation en temps réel et feedback visuel clair.
+            BPLR-ST8.1: Concevoir les maquettes de l'écran de connexion
+            BPLR-ST8.2: Développer le formulaire de connexion avec validation instantanée
+            BPLR-ST8.3: Implémenter la gestion des erreurs d'authentification
+            BPLR-ST8.4: Créer l'option "Se souvenir de moi" et sa logique
+    BPLR-US3: En tant qu'utilisateur, je veux mettre à jour mes informations de profil Description: L'utilisateur doit pouvoir gérer et modifier ses informations personnelles, paramètres de compte et préférences de sécurité depuis son profil. Le système doit garantir que les modifications sont sécurisées et correctement validées.
+        BPLR-T9: Créer les endpoints de gestion de profil utilisateur Description: Développer les API endpoints nécessaires pour consulter et modifier les différentes sections du profil utilisateur.
+            BPLR-ST9.1: Implémenter l'endpoint d'obtention du profil
+            BPLR-ST9.2: Développer l'endpoint de mise à jour des informations personnelles
+            BPLR-ST9.3: Créer l'endpoint de modification des préférences
+            BPLR-ST9.4: Implémenter la validation et la sécurisation des données modifiées
+        BPLR-T10: Implémenter la fonctionnalité de réinitialisation de mot de passe Description: Créer un système sécurisé pour permettre aux utilisateurs de réinitialiser leur mot de passe en cas d'oubli, incluant la vérification d'identité et la gestion des tokens temporaires.
+            BPLR-ST10.1: Développer l'endpoint de demande de réinitialisation
+            BPLR-ST10.2: Créer le service d'envoi d'email avec lien de réinitialisation
+            BPLR-ST10.3: Implémenter la validation et l'expiration des tokens de réinitialisation
+            BPLR-ST10.4: Développer l'endpoint de définition du nouveau mot de passe
+        BPLR-T11: Concevoir et implémenter l'interface de gestion de profil Description: Créer une interface utilisateur complète permettant la visualisation et modification des données de profil, avec une expérience intuitive et des validations appropriées.
+            BPLR-ST11.1: Concevoir les maquettes des écrans de profil
+            BPLR-ST11.2: Développer la section informations personnelles
+            BPLR-ST11.3: Créer la section sécurité et mot de passe
+            BPLR-ST11.4: Implémenter la section préférences et notifications
+
+Épopée 2: Système de Gestion des Échelles Dynamiques
+
+BPLR-E2: Mettre en œuvre la gestion d'échelles dynamiques avec niveaux personnalisables
+
+Description: Cette épopée couvre la conception et le développement du système central d'échelles personnalisables, permettant aux utilisateurs de créer, modifier et gérer différents types d'échelles pour mesurer leurs humeurs et émotions. Ce système est le cœur fonctionnel de l'application, offrant la flexibilité nécessaire pour s'adapter aux besoins spécifiques de chaque utilisateur.
+Récits Utilisateur:
+
+    BPLR-US4: En tant qu'administrateur système, je veux configurer des échelles d'humeur par défaut afin que les utilisateurs aient un point de départ Description: L'administrateur doit pouvoir définir un ensemble d'échelles prédéfinies représentant des métriques d'humeur standard (humeur générale, irritabilité, confiance, etc.) avec des descriptions claires pour chaque niveau. Ces échelles serviront de base pour tous les nouveaux utilisateurs.
+        BPLR-T12: Concevoir et implémenter les données initiales des échelles Description: Développer la structure de données et le contenu des échelles système par défaut, avec toutes les descriptions et paramètres nécessaires.
+            BPLR-ST12.1: Définir la structure de données complète des échelles système
+            BPLR-ST12.2: Créer le contenu des 5 échelles principales (Humeur, Irritabilité, Confiance, Extraversion, Bien-être)
+            BPLR-ST12.3: Définir les niveaux détaillés pour chaque échelle (0-13)
+            BPLR-ST12.4: Préparer les scripts de migration et d'initialisation de la base de données
+        BPLR-T13: Créer le dépôt et la couche service pour les échelles Description: Développer l'infrastructure de données et la logique métier pour la gestion des échelles, incluant l'accès aux données et les opérations principales.
+            BPLR-ST13.1: Implémenter l'interface du dépôt d'échelles
+            BPLR-ST13.2: Développer l'implémentation du dépôt avec Entity Framework
+            BPLR-ST13.3: Créer l'interface du service d'échelles
+            BPLR-ST13.4: Implémenter les méthodes principales du service d'échelles
+        BPLR-T14: Implémenter le mécanisme de protection des échelles système Description: Créer un système de sécurité pour empêcher la modification ou suppression accidentelle des échelles système par les utilisateurs, tout en permettant leur utilisation.
+            BPLR-ST14.1: Développer le système de marquage des échelles système
+            BPLR-ST14.2: Implémenter les vérifications de sécurité pour les opérations de modification
+            BPLR-ST14.3: Créer le système de gestion des versions pour les échelles système
+            BPLR-ST14.4: Mettre en place la journalisation des tentatives de modification non autorisées
+        BPLR-T15: Créer les endpoints API pour les échelles système Description: Développer les API endpoints nécessaires pour accéder aux échelles système, avec les contrôles d'accès et validations appropriés.
+            BPLR-ST15.1: Implémenter l'endpoint de liste des échelles système
+            BPLR-ST15.2: Développer l'endpoint de détail d'une échelle système
+            BPLR-ST15.3: Créer les endpoints d'administration pour la gestion des échelles système
+            BPLR-ST15.4: Mettre en place le système de cache pour optimiser les performances
+    BPLR-US5: En tant qu'utilisateur, je veux créer mes propres échelles personnalisées pour suivre les métriques importantes pour moi Description: L'utilisateur doit pouvoir définir ses propres échelles personnalisées pour suivre des aspects spécifiques de son état mental ou émotionnel qui ne sont pas couverts par les échelles standard. Le système doit offrir une flexibilité totale dans la définition des plages de valeurs et des descriptions.
+        BPLR-T16: Implémenter le contrôleur et le service de création d'échelles Description: Développer les composants responsables de la création et validation des nouvelles échelles personnalisées.
+            BPLR-ST16.1: Développer les méthodes de service pour la création d'échelles personnalisées
+            BPLR-ST16.2: Implémenter la logique d'attribution d'échelles à l'utilisateur
+            BPLR-ST16.3: Créer le système de validation des noms et descriptions d'échelles
+            BPLR-ST16.4: Mettre en place les limites et quotas par utilisateur
+        BPLR-T17: Concevoir et implémenter la validation dynamique des échelles Description: Créer un système flexible de validation pour s'assurer que les échelles personnalisées respectent les règles de cohérence et d'intégrité des données.
+            BPLR-ST17.1: Développer les validateurs pour les plages de valeurs
+            BPLR-ST17.2: Implémenter la validation des chevauchements de niveaux
+            BPLR-ST17.3: Créer les règles de validation des descriptions de niveaux
+            BPLR-ST17.4: Mettre en place le système de retour d'erreurs détaillées
+        BPLR-T18: Créer l'interface utilisateur pour la création d'échelles personnalisées Description: Développer une interface intuitive et interactive permettant aux utilisateurs de définir facilement leurs échelles personnalisées avec une visualisation claire des résultats.
+            BPLR-ST18.1: Concevoir les maquettes de l'interface de création d'échelles
+            BPLR-ST18.2: Développer le formulaire de définition des propriétés d'échelle
+            BPLR-ST18.3: Créer l'interface d'ajout/suppression dynamique de niveaux
+            BPLR-ST18.4: Implémenter l'aperçu en temps réel de l'échelle
+        BPLR-T19: Implémenter les interfaces de gestion des niveaux d'échelle Description: Créer les composants permettant la gestion détaillée des différents niveaux au sein d'une échelle, avec une expérience utilisateur fluide.
+            BPLR-ST19.1: Développer l'interface d'édition des valeurs de niveaux
+            BPLR-ST19.2: Créer le système de gestion des descriptions de niveaux
+            BPLR-ST19.3: Implémenter l'interface de réorganisation des niveaux
+            BPLR-ST19.4: Développer le système de validation en temps réel
+    BPLR-US6: En tant qu'utilisateur, je veux modifier les descriptions et niveaux des échelles pour mieux refléter mes besoins Description: L'utilisateur doit pouvoir ajuster les échelles existantes (personnelles uniquement) pour affiner les descriptions et niveaux en fonction de son expérience. Le système doit maintenir l'intégrité des données existantes tout en permettant cette flexibilité.
+        BPLR-T20: Créer les endpoints de mise à jour des échelles Description: Développer les API endpoints permettant la modification des échelles existantes avec les validations appropriées.
+            BPLR-ST20.1: Implémenter l'endpoint de mise à jour des propriétés d'échelle
+            BPLR-ST20.2: Développer la logique de vérification des permissions
+            BPLR-ST20.3: Créer le système de versionnement des modifications
+            BPLR-ST20.4: Mettre en place les règles de validation des modifications
+        BPLR-T21: Implémenter la fonctionnalité de mise à jour des descriptions de niveaux Description: Créer les composants permettant la modification des descriptions textuelles associées à chaque niveau d'une échelle.
+            BPLR-ST21.1: Développer l'endpoint d'édition des descriptions de niveaux
+            BPLR-ST21.2: Implémenter la logique de préservation de l'historique
+            BPLR-ST21.3: Créer les validateurs spécifiques aux descriptions
+            BPLR-ST21.4: Mettre en place l'indexation pour la recherche textuelle
+        BPLR-T22: Concevoir et implémenter l'interface d'édition des échelles Description: Créer une interface intuitive permettant la modification des échelles existantes avec retour visuel immédiat et validations appropriées.
+            BPLR-ST22.1: Concevoir les maquettes de l'interface d'édition
+            BPLR-ST22.2: Développer le formulaire d'édition des propriétés générales
+            BPLR-ST22.3: Créer l'interface de modification des niveaux existants
+            BPLR-ST22.4: Implémenter le système d'annulation et historique des modifications
+        BPLR-T23: Créer l'interface de réorganisation des niveaux par glisser-déposer Description: Développer une interface interactive permettant la réorganisation intuitive des niveaux d'échelle par simple glisser-déposer.
+            BPLR-ST23.1: Implémenter le composant de drag-and-drop pour les niveaux
+            BPLR-ST23.2: Développer la logique de mise à jour des positions
+            BPLR-ST23.3: Créer l'animation visuelle de réorganisation
+            BPLR-ST23.4: Mettre en place la validation de cohérence après réorganisation
+
+Épopée 3: Saisie et Suivi des Humeurs
+
+BPLR-E3: Mettre en œuvre un système complet de saisie et suivi d'humeur
+
+Description: Cette épopée couvre la conception et le développement de toutes les fonctionnalités permettant aux utilisateurs d'enregistrer, consulter et gérer leurs entrées d'humeur. Elle inclut les interfaces de saisie, la persistance des données, les mécanismes de modification et l'historique complet des humeurs, formant ainsi le cœur fonctionnel de l'application de suivi d'humeur.
+Récits Utilisateur:
+
+    BPLR-US7: En tant qu'utilisateur, je veux enregistrer une nouvelle entrée d'humeur avec des métriques provenant de plusieurs échelles Description: L'utilisateur doit pouvoir créer facilement une nouvelle entrée d'humeur en spécifiant des valeurs pour différentes échelles (standard et personnalisées), ajouter des commentaires contextuels et enregistrer la date/heure. L'interface doit être intuitive et permettre une saisie rapide des données principales.
+        BPLR-T24: Concevoir et implémenter le modèle de domaine des entrées d'humeur Description: Développer la structure de données complète pour les entrées d'humeur, incluant toutes les relations avec les échelles et les métriques associées.
+            BPLR-ST24.1: Définir l'entité principale MoodEntry avec ses propriétés
+            BPLR-ST24.2: Concevoir l'entité MoodMetric pour les valeurs d'échelles
+            BPLR-ST24.3: Établir les relations entre entités et contraintes
+            BPLR-ST24.4: Implémenter les méthodes de domaine pour la gestion des métriques
+        BPLR-T25: Créer le dépôt et la couche service pour les entrées d'humeur Description: Développer l'infrastructure de données et la logique métier pour la gestion des entrées d'humeur, incluant l'accès aux données et les opérations CRUD.
+            BPLR-ST25.1: Implémenter l'interface du dépôt d'entrées d'humeur
+            BPLR-ST25.2: Développer l'implémentation du dépôt avec Entity Framework
+            BPLR-ST25.3: Créer l'interface du service d'entrées d'humeur
+            BPLR-ST25.4: Implémenter les méthodes principales du service
+        BPLR-T26: Implémenter les endpoints API pour la création d'entrées d'humeur Description: Développer les API endpoints nécessaires pour créer de nouvelles entrées d'humeur avec validation et traitement des données associées.
+            BPLR-ST26.1: Créer l'endpoint de création d'entrée d'humeur complète
+            BPLR-ST26.2: Implémenter la validation des données d'entrée
+            BPLR-ST26.3: Développer la logique de traitement des métriques multiples
+            BPLR-ST26.4: Mettre en place la gestion des horodatages et fuseaux horaires
+        BPLR-T27: Concevoir et implémenter le formulaire d'entrée d'humeur Description: Créer une interface intuitive permettant la saisie rapide et précise des différentes métriques d'humeur avec visualisation appropriée des échelles.
+            BPLR-ST27.1: Concevoir les maquettes du formulaire d'entrée
+            BPLR-ST27.2: Développer l'interface de sélection de valeurs sur les échelles
+            BPLR-ST27.3: Créer le composant de saisie de commentaires et métadonnées
+            BPLR-ST27.4: Implémenter la sauvegarde automatique des brouillons
+    BPLR-US8: En tant qu'utilisateur, je veux mettre à jour mes entrées d'humeur précédentes en cas d'erreur Description: L'utilisateur doit pouvoir modifier les entrées d'humeur existantes pour corriger des erreurs ou ajouter des informations complémentaires. Le système doit maintenir l'intégrité des données tout en permettant ces modifications.
+        BPLR-T28: Implémenter la fonctionnalité de mise à jour des entrées d'humeur Description: Développer la logique métier permettant la modification des entrées d'humeur existantes avec gestion de l'historique et validation.
+            BPLR-ST28.1: Créer les méthodes de service pour la mise à jour des entrées
+            BPLR-ST28.2: Implémenter la logique de vérification des permissions
+            BPLR-ST28.3: Développer le système d'horodatage des modifications
+            BPLR-ST28.4: Mettre en place les règles de validation des modifications
+        BPLR-T29: Créer les endpoints de mise à jour des métriques Description: Développer les API endpoints permettant la modification spécifique des métriques associées à une entrée d'humeur.
+            BPLR-ST29.1: Implémenter l'endpoint de mise à jour d'une métrique spécifique
+            BPLR-ST29.2: Créer l'endpoint de mise à jour groupée de métriques
+            BPLR-ST29.3: Développer la logique de validation par échelle
+            BPLR-ST29.4: Mettre en place le traitement des dépendances entre métriques
+        BPLR-T30: Implémenter la concurrence optimiste pour les mises à jour Description: Créer un système robuste pour gérer les conflits potentiels lors de modifications simultanées des entrées d'humeur.
+            BPLR-ST30.1: Implémenter le mécanisme de version/timestamp pour les entrées
+            BPLR-ST30.2: Développer la logique de détection des conflits
+            BPLR-ST30.3: Créer le système de résolution automatique quand possible
+            BPLR-ST30.4: Mettre en place l'interface de résolution manuelle des conflits
+        BPLR-T31: Concevoir et implémenter l'interface d'édition des entrées Description: Créer une interface utilisateur intuitive permettant la modification des entrées d'humeur existantes avec retour visuel clair et validation en temps réel.
+            BPLR-ST31.1: Concevoir les maquettes de l'interface d'édition
+            BPLR-ST31.2: Développer le formulaire d'édition avec valeurs pré-remplies
+            BPLR-ST31.3: Créer les contrôles de modification des valeurs par échelle
+            BPLR-ST31.4: Implémenter l'indicateur visuel des champs modifiés
+    BPLR-US9: En tant qu'utilisateur, je veux parcourir mon historique d'humeur pour voir des modèles Description: L'utilisateur doit pouvoir consulter l'ensemble de ses entrées d'humeur passées sous différentes formes (liste, calendrier, etc.) et appliquer des filtres pour identifier des tendances et modèles dans son humeur au fil du temps.
+        BPLR-T32: Créer la fonctionnalité de requête paginée des entrées d'humeur Description: Développer un système performant de requête des entrées d'humeur avec pagination et options de tri pour faciliter la navigation dans de grands volumes de données.
+            BPLR-ST32.1: Implémenter la structure de requête paginée
+            BPLR-ST32.2: Développer les méthodes d'optimisation de requêtes SQL
+            BPLR-ST32.3: Créer le système de cache pour les requêtes fréquentes
+            BPLR-ST32.4: Mettre en place la gestion des métadonnées de pagination
+        BPLR-T33: Implémenter le filtrage par plage de dates Description: Créer un système flexible permettant de filtrer les entrées d'humeur selon différentes plages temporelles (jour, semaine, mois, personnalisé, etc.).
+            BPLR-ST33.1: Développer la logique de filtrage par dates précises
+            BPLR-ST33.2: Implémenter les filtres prédéfinis (semaine, mois, trimestre)
+            BPLR-ST33.3: Créer le système de plages de dates relatives (derniers X jours)
+            BPLR-ST33.4: Mettre en place la gestion des fuseaux horaires
+        BPLR-T34: Concevoir et implémenter l'interface de consultation de l'historique Description: Créer une interface riche et intuitive permettant de visualiser et naviguer dans l'historique des entrées d'humeur sous différentes formes.
+            BPLR-ST34.1: Concevoir les maquettes des vues d'historique
+            BPLR-ST34.2: Développer la vue liste chronologique des entrées
+            BPLR-ST34.3: Créer la vue calendrier avec indicateurs d'humeur
+            BPLR-ST34.4: Implémenter les contrôles de filtrage et navigation temporelle
+        BPLR-T35: Créer la fonctionnalité d'exportation des données Description: Développer un système permettant aux utilisateurs d'exporter leurs données d'humeur dans différents formats pour utilisation externe.
+            BPLR-ST35.1: Implémenter l'exportation au format CSV
+            BPLR-ST35.2: Développer l'exportation au format JSON
+            BPLR-ST35.3: Créer l'exportation au format PDF avec visualisations
+            BPLR-ST35.4: Mettre en place les options de personnalisation d'export
+
+Épopée 4: Formule de Stabilité et Calcul
+
+BPLR-E4: Mettre en œuvre un système flexible de calcul de stabilité
+
+Description: Cette épopée couvre la conception et le développement du système d'analyse de stabilité émotionnelle, permettant de calculer automatiquement des scores de stabilité basés sur les différentes métriques d'humeur. Elle inclut la définition de formules personnalisables, l'application de pondérations aux échelles et la visualisation des résultats, offrant une perspective objective sur l'évolution de l'état émotionnel.
+Récits Utilisateur:
+
+    BPLR-US10: En tant qu'administrateur système, je veux définir des formules de stabilité par défaut Description: L'administrateur doit pouvoir configurer des formules standard pour calculer la stabilité émotionnelle à partir des différentes échelles d'humeur. Ces formules serviront de référence pour tous les utilisateurs et établiront une méthodologie cohérente d'évaluation.
+        BPLR-T36: Concevoir le modèle de domaine des formules de stabilité Description: Développer la structure de données complète pour les formules de stabilité, incluant les pondérations d'échelles et les paramètres de calcul.
+            BPLR-ST36.1: Définir l'entité StabilityFormula avec ses propriétés
+            BPLR-ST36.2: Concevoir l'entité ScaleWeight pour les pondérations
+            BPLR-ST36.3: Établir les relations et contraintes du modèle
+            BPLR-ST36.4: Implémenter les méthodes de domaine pour les calculs
+        BPLR-T37: Implémenter le dépôt et la couche service pour les formules Description: Développer l'infrastructure de données et la logique métier pour la gestion des formules de stabilité, incluant l'accès aux données et les opérations CRUD.
+            BPLR-ST37.1: Créer l'interface du dépôt de formules
+            BPLR-ST37.2: Développer l'implémentation du dépôt avec Entity Framework
+            BPLR-ST37.3: Implémenter l'interface du service de formules
+            BPLR-ST37.4: Développer les méthodes principales du service
+        BPLR-T38: Créer la configuration des formules par défaut Description: Définir et implémenter les formules de stabilité standard du système avec les pondérations appropriées pour chaque échelle.
+            BPLR-ST38.1: Définir la formule standard équilibrée
+            BPLR-ST38.2: Créer la formule axée sur l'humeur
+            BPLR-ST38.3: Développer la formule axée sur l'anxiété/bien-être
+            BPLR-ST38.4: Implémenter la formule de stabilité sociale
+        BPLR-T39: Implémenter la fabrique de calculateurs de stabilité Description: Créer un système flexible permettant de sélectionner et instancier différents algorithmes de calcul de stabilité selon le contexte.
+            BPLR-ST39.1: Développer l'interface IStabilityCalculator
+            BPLR-ST39.2: Implémenter le calculateur standard
+            BPLR-ST39.3: Créer le calculateur à moyenne pondérée
+            BPLR-ST39.4: Développer la fabrique de sélection dynamique
+    BPLR-US11: En tant qu'utilisateur, je veux créer des formules de stabilité personnalisées avec des pondérations personnalisées Description: L'utilisateur doit pouvoir définir ses propres formules de calcul de stabilité en attribuant des poids personnalisés aux différentes échelles selon leur importance subjective. Le système doit permettre la création, test et comparaison de ces formules personnalisées.
+        BPLR-T40: Implémenter les endpoints de création de formules personnalisées Description: Développer les API endpoints permettant la création et gestion de formules de stabilité personnalisées.
+            BPLR-ST40.1: Créer l'endpoint de création de formule
+            BPLR-ST40.2: Implémenter l'endpoint de duplication de formule existante
+            BPLR-ST40.3: Développer la validation des paramètres de formule
+            BPLR-ST40.4: Mettre en place les contrôles d'accès et limites par utilisateur
+        BPLR-T41: Créer la fonctionnalité de gestion des pondérations d'échelles Description: Développer les composants permettant d'attribuer et gérer les poids associés à chaque échelle dans une formule de stabilité.
+            BPLR-ST41.1: Implémenter l'ajout de pondérations à une formule
+            BPLR-ST41.2: Développer la modification des poids existants
+            BPLR-ST41.3: Créer la logique de normalisation des poids
+            BPLR-ST41.4: Mettre en place la validation de cohérence des pondérations
+        BPLR-T42: Concevoir et implémenter l'interface de création de formules Description: Créer une interface intuitive permettant de définir et configurer des formules de stabilité personnalisées avec retour visuel immédiat.
+            BPLR-ST42.1: Concevoir les maquettes de l'interface de création
+            BPLR-ST42.2: Développer le formulaire de propriétés de formule
+            BPLR-ST42.3: Créer l'interface d'attribution des poids par échelle
+            BPLR-ST42.4: Implémenter la visualisation de l'impact des pondérations
+        BPLR-T43: Créer la capacité de test des formules Description: Développer un système permettant aux utilisateurs de tester leurs formules personnalisées sur des données existantes pour évaluer leur pertinence.
+            BPLR-ST43.1: Implémenter le calcul de stabilité sur données historiques
+            BPLR-ST43.2: Développer la visualisation comparative des résultats
+            BPLR-ST43.3: Créer l'interface de simulation avec valeurs ajustables
+            BPLR-ST43.4: Mettre en place l'export des résultats de simulation
+    BPLR-US12: En tant qu'utilisateur, je veux voir les scores de stabilité sur mes entrées d'humeur automatiquement Description: L'utilisateur doit pouvoir visualiser automatiquement les scores de stabilité calculés pour chaque entrée d'humeur selon la formule sélectionnée. Ces scores doivent être clairement présentés et accompagnés d'explications contextuelles.
+        BPLR-T44: Implémenter le calcul automatique de stabilité lors de la création d'entrées Description: Développer la logique pour calculer et enregistrer automatiquement les scores de stabilité à chaque nouvelle entrée d'humeur.
+            BPLR-ST44.1: Intégrer le calcul de stabilité dans le processus de création
+            BPLR-ST44.2: Implémenter la sélection de formule par défaut
+            BPLR-ST44.3: Développer la persistance des scores calculés
+            BPLR-ST44.4: Créer le système d'historique des calculs
+        BPLR-T45: Créer la fonctionnalité de recalcul de stabilité Description: Développer un système permettant de recalculer rétroactivement les scores de stabilité sur les entrées existantes, notamment après modification d'une formule.
+            BPLR-ST45.1: Implémenter l'endpoint de recalcul global
+            BPLR-ST45.2: Développer le recalcul ciblé par plage de dates
+            BPLR-ST45.3: Créer le système de traitement par lots pour les grands volumes
+            BPLR-ST45.4: Mettre en place la notification de progression et résultats
+        BPLR-T46: Concevoir la visualisation des scores de stabilité dans l'interface Description: Créer des composants visuels clairs et informatifs pour présenter les scores de stabilité dans l'interface utilisateur.
+            BPLR-ST46.1: Concevoir les indicateurs visuels de score de stabilité
+            BPLR-ST46.2: Développer l'affichage des descriptions textuelles
+            BPLR-ST46.3: Créer les tooltips explicatifs et contextuels
+            BPLR-ST46.4: Implémenter les codes couleur et échelles visuelles
+        BPLR-T47: Implémenter l'analyse de tendance de stabilité Description: Développer des outils d'analyse permettant d'identifier et visualiser les tendances d'évolution de la stabilité émotionnelle au fil du temps.
+            BPLR-ST47.1: Créer l'algorithme de détection de tendances
+            BPLR-ST47.2: Développer les indicateurs statistiques (moyenne, écart-type)
+            BPLR-ST47.3: Implémenter la visualisation des périodes de stabilité
+            BPLR-ST47.4: Créer les alertes de changements significatifs
+
+Épopée 5: Intégration de Mistral AI
+
+BPLR-E5: Intégrer Mistral AI pour l'évaluation assistée de l'humeur
+
+Description: Cette épopée couvre l'intégration complète de l'intelligence artificielle Mistral pour faciliter et enrichir le processus d'évaluation de l'humeur. Elle inclut la mise en place d'interactions conversationnelles pour l'auto-évaluation, l'analyse des réponses utilisateur et la génération d'insights personnalisés, transformant l'expérience de saisie en un processus plus naturel et réflexif.
+Récits Utilisateur:
+
+    BPLR-US13: En tant qu'utilisateur, je veux avoir une conversation avec l'IA pour évaluer mon humeur au lieu de saisir manuellement des scores Description: L'utilisateur doit pouvoir interagir avec un assistant IA conversationnel qui posera des questions pertinentes pour évaluer son état émotionnel actuel. Cette conversation doit être naturelle, empathique et aboutir à une évaluation précise sur les différentes échelles d'humeur.
+        BPLR-T48: Concevoir et implémenter le client API Mistral Description: Développer l'infrastructure complète pour communiquer avec l'API Mistral, incluant l'authentification, la gestion des requêtes et le traitement des réponses.
+            BPLR-ST48.1: Implémenter le client HTTP sécurisé pour l'API Mistral
+            BPLR-ST48.2: Développer la gestion des tokens d'authentification
+            BPLR-ST48.3: Créer le système de gestion des erreurs et retries
+            BPLR-ST48.4: Mettre en place la télémétrie et journalisation
+        BPLR-T49: Créer le flux de conversation pour l'évaluation d'humeur Description: Concevoir la structure et la progression de la conversation IA-utilisateur pour obtenir efficacement les informations nécessaires à l'évaluation d'humeur.
+            BPLR-ST49.1: Définir les étapes du flux conversationnel
+            BPLR-ST49.2: Développer la logique de progression des questions
+            BPLR-ST49.3: Créer les mécanismes d'adaptation contextuelle
+            BPLR-ST49.4: Implémenter la gestion de l'historique de conversation
+        BPLR-T50: Implémenter les modèles de prompts avec informations d'échelles Description: Développer un système de templates de prompts dynamiques incluant les informations spécifiques sur les échelles d'humeur pour guider l'IA dans son évaluation.
+            BPLR-ST50.1: Créer le système de templates de prompts
+            BPLR-ST50.2: Développer l'injection dynamique des définitions d'échelles
+            BPLR-ST50.3: Implémenter les variations de formulation par contexte
+            BPLR-ST50.4: Mettre en place l'optimisation continue des prompts
+        BPLR-T51: Concevoir et implémenter l'interface de chat Description: Créer une interface de conversation intuitive et engageante pour faciliter l'interaction entre l'utilisateur et l'IA d'évaluation d'humeur.
+            BPLR-ST51.1: Concevoir les maquettes de l'interface de chat
+            BPLR-ST51.2: Développer le composant de messagerie bidirectionnelle
+            BPLR-ST51.3: Créer les indicateurs visuels d'activité et réflexion
+            BPLR-ST51.4: Implémenter l'accessibilité et responsivité
+    BPLR-US14: En tant qu'utilisateur, je veux examiner et ajuster les évaluations d'humeur générées par l'IA Description: L'utilisateur doit pouvoir consulter, valider et modifier si nécessaire les évaluations d'humeur proposées par l'IA. Le système doit présenter clairement les valeurs suggérées et permettre des ajustements intuitifs avant l'enregistrement final.
+        BPLR-T52: Implémenter l'extraction d'évaluation à partir des réponses de l'IA Description: Développer les algorithmes permettant d'extraire de manière fiable les valeurs d'échelles et commentaires des réponses textuelles de l'IA.
+            BPLR-ST52.1: Créer le parseur JSON pour les réponses structurées
+            BPLR-ST52.2: Développer l'extraction par expressions régulières
+            BPLR-ST52.3: Implémenter la validation et normalisation des valeurs extraites
+            BPLR-ST52.4: Mettre en place la gestion des réponses ambiguës
+        BPLR-T53: Créer les endpoints de révision d'évaluation Description: Développer les API endpoints permettant de consulter et modifier les évaluations générées par l'IA avant leur enregistrement définitif.
+            BPLR-ST53.1: Implémenter l'endpoint de prévisualisation d'évaluation
+            BPLR-ST53.2: Développer l'endpoint de modification d'évaluation
+            BPLR-ST53.3: Créer l'endpoint de validation et enregistrement
+            BPLR-ST53.4: Mettre en place la journalisation des modifications manuelles
+        BPLR-T54: Concevoir et implémenter l'interface de révision d'évaluation Description: Créer une interface claire et intuitive permettant de visualiser et ajuster les valeurs proposées par l'IA sur chaque échelle.
+            BPLR-ST54.1: Concevoir les maquettes de l'interface de révision
+            BPLR-ST54.2: Développer l'affichage des valeurs avec références visuelles
+            BPLR-ST54.3: Créer les contrôles d'ajustement pour chaque échelle
+            BPLR-ST54.4: Implémenter la comparaison avant/après ajustements
+        BPLR-T55: Créer la capacité d'ajustement des évaluations IA Description: Développer les mécanismes permettant aux utilisateurs de modifier facilement les valeurs proposées par l'IA tout en conservant les commentaires et contexte associés.
+            BPLR-ST55.1: Implémenter l'édition directe des valeurs d'échelles
+            BPLR-ST55.2: Développer la modification des commentaires générés
+            BPLR-ST55.3: Créer le système de suggestions alternatives
+            BPLR-ST55.4: Mettre en place le feedback d'apprentissage pour l'IA
+    BPLR-US15: En tant qu'utilisateur, je veux des insights générés par l'IA sur mes modèles d'humeur Description: L'utilisateur doit pouvoir recevoir des analyses personnalisées de ses tendances d'humeur, générées par l'IA à partir de son historique de données. Ces insights doivent être pertinents, accessibles et offrir une réelle valeur ajoutée pour la compréhension de son état émotionnel.
+        BPLR-T56: Concevoir et implémenter les prompts d'analyse d'humeur Description: Développer des templates de prompts spécialisés pour l'analyse des tendances d'humeur et la génération d'insights personnalisés.
+            BPLR-ST56.1: Créer les prompts d'analyse de tendances générales
+            BPLR-ST56.2: Développer les prompts d'analyse des corrélations
+            BPLR-ST56.3: Implémenter les prompts d'identification de déclencheurs
+            BPLR-ST56.4: Concevoir les prompts de suggestions personnalisées
+        BPLR-T57: Créer les algorithmes de détection de tendances Description: Développer des algorithmes d'analyse statistique pour identifier les tendances significatives dans les données d'humeur avant leur transmission à l'IA.
+            BPLR-ST57.1: Implémenter l'analyse de séries temporelles
+            BPLR-ST57.2: Développer les algorithmes de détection de cycles
+            BPLR-ST57.3: Créer les méthodes de corrélation entre variables
+            BPLR-ST57.4: Mettre en place l'identification des anomalies
+        BPLR-T58: Implémenter le service de génération d'insights Description: Développer le service responsable de l'agrégation des données, l'invocation de l'IA et le traitement des insights générés.
+            BPLR-ST58.1: Créer la logique de préparation des données historiques
+            BPLR-ST58.2: Développer l'intégration avec le client Mistral
+            BPLR-ST58.3: Implémenter le post-traitement des insights générés
+            BPLR-ST58.4: Mettre en place le cache et la gestion des insights
+        BPLR-T59: Concevoir et implémenter l'interface d'affichage des insights Description: Créer une interface attrayante et informative pour présenter les insights générés par l'IA d'une manière accessible et actionnables.
+            BPLR-ST59.1: Concevoir les maquettes de l'interface d'insights
+            BPLR-ST59.2: Développer les cartes d'insights thématiques
+            BPLR-ST59.3: Créer les visualisations complémentaires
+            BPLR-ST59.4: Implémenter les interactions et explorations détaillées
+
+Épopée 6: Rapports et Analytique
+
+BPLR-E6: Mettre en œuvre des rapports et analyses complets
+
+Description: Cette épopée couvre la conception et le développement de fonctionnalités avancées de visualisation et d'analyse des données d'humeur. Elle inclut la création de graphiques interactifs, l'identification de corrélations entre métriques, et la génération de rapports personnalisés, permettant aux utilisateurs d'obtenir une compréhension approfondie de leurs tendances émotionnelles sur différentes périodes.
+Récits Utilisateur:
+
+    BPLR-US16: En tant qu'utilisateur, je veux voir des graphiques visuels de mes métriques d'humeur dans le temps Description: L'utilisateur doit pouvoir visualiser l'évolution de ses différentes métriques d'humeur à travers divers types de graphiques temporels. Ces visualisations doivent être claires, interactives et permettre l'identification facile des tendances et variations significatives.
+        BPLR-T60: Concevoir la logique de préparation des données de séries temporelles Description: Développer les mécanismes de transformation et agrégation des données d'humeur pour une utilisation optimale dans les visualisations temporelles.
+            BPLR-ST60.1: Implémenter la normalisation des données temporelles
+            BPLR-ST60.2: Développer les algorithmes d'agrégation par période
+            BPLR-ST60.3: Créer la logique de gestion des données manquantes
+            BPLR-ST60.4: Mettre en place les calculs statistiques complémentaires
+        BPLR-T61: Implémenter les endpoints de données pour graphiques Description: Développer les API endpoints fournissant les données formatées nécessaires aux différentes visualisations graphiques.
+            BPLR-ST61.1: Créer l'endpoint de données pour graphiques linéaires
+            BPLR-ST61.2: Implémenter l'endpoint pour graphiques à barres/histogrammes
+            BPLR-ST61.3: Développer l'endpoint pour visualisations calendaires
+            BPLR-ST61.4: Mettre en place l'optimisation et mise en cache des données
+        BPLR-T62: Créer plusieurs types de graphiques (ligne, heatmap, radar) Description: Développer une bibliothèque de composants de visualisation variés pour représenter les données d'humeur selon différents angles d'analyse.
+            BPLR-ST62.1: Implémenter les graphiques linéaires avec moyennes mobiles
+            BPLR-ST62.2: Développer les heatmaps calendaires d'intensité
+            BPLR-ST62.3: Créer les graphiques radar pour comparaisons multi-échelles
+            BPLR-ST62.4: Mettre en place les histogrammes de distribution
+        BPLR-T63: Concevoir et implémenter l'interface de graphiques interactive Description: Créer une interface utilisateur riche permettant l'exploration interactive des visualisations de données d'humeur avec des contrôles intuitifs.
+            BPLR-ST63.1: Concevoir les maquettes du tableau de bord graphique
+            BPLR-ST63.2: Développer les contrôles de sélection de période
+            BPLR-ST63.3: Créer les fonctionnalités de zoom et exploration détaillée
+            BPLR-ST63.4: Implémenter la personnalisation des visualisations
+    BPLR-US17: En tant qu'utilisateur, je veux voir les corrélations entre différentes métriques d'humeur Description: L'utilisateur doit pouvoir identifier et explorer les relations potentielles entre ses différentes métriques d'humeur. Le système doit analyser automatiquement ces corrélations et les présenter de manière compréhensible avec des visualisations appropriées.
+        BPLR-T64: Implémenter le service de calcul de corrélations Description: Développer les algorithmes statistiques pour analyser et quantifier les corrélations entre différentes métriques d'humeur sur des périodes données.
+            BPLR-ST64.1: Créer les algorithmes de calcul de coefficients de corrélation
+            BPLR-ST64.2: Développer les tests de significativité statistique
+            BPLR-ST64.3: Implémenter l'analyse de corrélations temporelles décalées
+            BPLR-ST64.4: Mettre en place l'identification automatique des corrélations fortes
+        BPLR-T65: Créer les endpoints de visualisation de corrélations Description: Développer les API endpoints fournissant les données de corrélation formatées pour différentes visualisations.
+            BPLR-ST65.1: Implémenter l'endpoint de matrice de corrélation
+            BPLR-ST65.2: Développer l'endpoint de graphiques à dispersion
+            BPLR-ST65.3: Créer l'endpoint de données pour graphiques de corrélation temporelle
+            BPLR-ST65.4: Mettre en place la génération de descriptions textuelles des corrélations
+        BPLR-T66: Concevoir et implémenter l'interface de matrice de corrélation Description: Créer une interface intuitive pour visualiser les corrélations entre métriques sous forme de matrice interactive avec codes couleur et informations détaillées.
+            BPLR-ST66.1: Concevoir les maquettes de la matrice de corrélation
+            BPLR-ST66.2: Développer la visualisation heatmap des coefficients
+            BPLR-ST66.3: Créer les interactions de sélection et focus
+            BPLR-ST66.4: Implémenter les tooltips explicatifs et statistiques
+        BPLR-T67: Créer la capacité d'analyse détaillée Description: Développer des fonctionnalités permettant d'approfondir l'analyse des corrélations identifiées avec des visualisations complémentaires et des explorations détaillées.
+            BPLR-ST67.1: Implémenter les graphiques à dispersion pour paires de métriques
+            BPLR-ST67.2: Développer les visualisations de séries temporelles comparatives
+            BPLR-ST67.3: Créer les analyses de facteurs potentiels communs
+            BPLR-ST67.4: Mettre en place les filtres contextuels pour affiner l'analyse
+    BPLR-US18: En tant qu'utilisateur, je veux exporter mes données d'humeur pour analyse externe Description: L'utilisateur doit pouvoir exporter ses données d'humeur dans différents formats standards pour les analyser avec des outils externes ou les partager avec des professionnels. Le système doit offrir des options flexibles d'export tout en garantissant la sécurité des données.
+        BPLR-T68: Implémenter la fonctionnalité d'export CSV Description: Développer les mécanismes d'export des données d'humeur au format CSV standard pour une compatibilité maximale avec les outils d'analyse tiers.
+            BPLR-ST68.1: Créer le service de génération de fichiers CSV
+            BPLR-ST68.2: Développer les options de formatage et délimiteurs
+            BPLR-ST68.3: Implémenter les filtres de sélection de données
+            BPLR-ST68.4: Mettre en place la gestion des caractères spéciaux
+        BPLR-T69: Créer l'export de données JSON Description: Développer les fonctionnalités d'export des données d'humeur au format JSON structuré pour une utilisation dans des applications web ou mobiles.
+            BPLR-ST69.1: Implémenter le service de sérialisation JSON
+            BPLR-ST69.2: Développer les schémas de données structurés
+            BPLR-ST69.3: Créer les options de format compact ou lisible
+            BPLR-ST69.4: Mettre en place les mécanismes de sécurité des données
+        BPLR-T70: Implémenter la génération de rapports PDF Description: Développer un système de génération de rapports PDF complets incluant données, visualisations et analyses pour un partage facilité avec des professionnels.
+            BPLR-ST70.1: Créer le service de génération de documents PDF
+            BPLR-ST70.2: Développer les templates de mise en page
+            BPLR-ST70.3: Implémenter l'intégration des graphiques et visualisations
+            BPLR-ST70.4: Mettre en place les options de personnalisation de rapports
+        BPLR-T71: Concevoir et implémenter l'interface d'export Description: Créer une interface utilisateur intuitive permettant de configurer et déclencher facilement l'export de données selon différents formats et options.
+            BPLR-ST71.1: Concevoir les maquettes de l'interface d'export
+            BPLR-ST71.2: Développer les contrôles de sélection de format
+            BPLR-ST71.3: Créer les options de filtrage de données
+            BPLR-ST71.4: Implémenter les mécanismes de téléchargement sécurisé
+
+Épopée 7: API et Intégration
+
+BPLR-E7: Créer une API robuste pour l'intégration tierce
+
+Description: Cette épopée couvre la conception et le développement d'une API complète et sécurisée permettant l'intégration du système avec des applications et services tiers. Elle inclut la documentation détaillée, les mécanismes d'authentification, et les fonctionnalités de notification, facilitant l'extension de l'écosystème de suivi d'humeur à travers des intégrations diverses.
+Récits Utilisateur:
+
+    BPLR-US19: En tant que développeur, je veux une documentation API complète Description: Les développeurs externes doivent disposer d'une documentation API exhaustive, claire et à jour pour faciliter l'intégration avec le système. Cette documentation doit couvrir tous les endpoints, formats de données, mécanismes d'authentification et inclure des exemples pratiques.
+        BPLR-T72: Générer la documentation Swagger/OpenAPI Description: Mettre en place et configurer la génération automatique de documentation API au format Swagger/OpenAPI à partir des annotations du code.
+            BPLR-ST72.1: Configurer l'intégration Swashbuckle/NSwag
+            BPLR-ST72.2: Implémenter les annotations XML sur les contrôleurs
+            BPLR-ST72.3: Définir les schémas de réponse et descriptions
+            BPLR-ST72.4: Mettre en place le versionnement de documentation
+        BPLR-T73: Créer des exemples d'utilisation de l'API Description: Développer un ensemble d'exemples concrets d'utilisation de l'API dans différents langages et scénarios pour faciliter l'adoption par les développeurs.
+            BPLR-ST73.1: Créer les exemples en C# (client .NET)
+            BPLR-ST73.2: Développer les exemples en JavaScript (Node.js)
+            BPLR-ST73.3: Implémenter les exemples en Python
+            BPLR-ST73.4: Produire les exemples curl pour les opérations courantes
+        BPLR-T74: Rédiger la documentation pour tous les endpoints Description: Produire une documentation détaillée et structurée pour chaque endpoint de l'API, incluant paramètres, formats, codes de retour et considérations spéciales.
+            BPLR-ST74.1: Documenter les endpoints d'authentification
+            BPLR-ST74.2: Créer la documentation des endpoints de gestion d'échelles
+            BPLR-ST74.3: Rédiger la documentation des endpoints d'entrées d'humeur
+            BPLR-ST74.4: Produire la documentation des endpoints d'analytique
+        BPLR-T75: Implémenter l'interface Swagger UI pour les tests interactifs Description: Mettre en place une interface Swagger UI conviviale permettant l'exploration et le test interactif des endpoints API directement depuis la documentation.
+            BPLR-ST75.1: Configurer l'interface Swagger UI
+            BPLR-ST75.2: Personnaliser le thème et la présentation
+            BPLR-ST75.3: Implémenter les fonctionnalités d'authentification
+            BPLR-ST75.4: Mettre en place les exemples de requêtes prédéfinis
+    BPLR-US20: En tant que développeur, je veux une authentification API sécurisée Description: Les développeurs intégrant leur application avec l'API doivent disposer de mécanismes d'authentification robustes, flexibles et conformes aux standards de l'industrie pour garantir la sécurité des données lors des échanges.
+        BPLR-T76: Implémenter le système d'authentification par clé API Description: Développer un système complet de gestion de clés API pour l'authentification des applications tierces, incluant génération, révocation et monitoring.
+            BPLR-ST76.1: Créer le modèle de données et stockage des clés API
+            BPLR-ST76.2: Développer la logique de génération et validation
+            BPLR-ST76.3: Implémenter le middleware d'authentification
+            BPLR-ST76.4: Mettre en place l'audit et journalisation
+        BPLR-T77: Créer l'intégration OAuth Description: Implémenter le protocole OAuth 2.0 pour permettre une authentification sécurisée des utilisateurs via des fournisseurs d'identité tiers ou en direct.
+            BPLR-ST77.1: Configurer le serveur d'autorisation OAuth
+            BPLR-ST77.2: Développer le flux d'authentification par code
+            BPLR-ST77.3: Implémenter la gestion des tokens d'accès et refresh
+            BPLR-ST77.4: Créer les endpoints de révocation et introspection
+        BPLR-T78: Implémenter la limitation de débit Description: Développer un système de rate limiting pour protéger l'API contre les abus et garantir une équité d'accès entre les différents consommateurs.
+            BPLR-ST78.1: Créer le middleware de limitation de débit
+            BPLR-ST78.2: Développer la configuration par type de client
+            BPLR-ST78.3: Implémenter les en-têtes HTTP standard
+            BPLR-ST78.4: Mettre en place la surveillance et alertes
+        BPLR-T79: Concevoir et implémenter le portail développeur Description: Créer une interface dédiée aux développeurs pour la gestion de leurs intégrations API, incluant création de clés, monitoring d'usage et documentation.
+            BPLR-ST79.1: Concevoir les maquettes du portail développeur
+            BPLR-ST79.2: Développer l'interface de gestion des applications
+            BPLR-ST79.3: Créer le tableau de bord de métriques d'utilisation
+            BPLR-ST79.4: Implémenter l'accès intégré à la documentation
+    BPLR-US21: En tant qu'utilisateur, je veux connecter des services tiers à mon suivi d'humeur Description: L'utilisateur doit pouvoir intégrer des services et applications tiers à son suivi d'humeur pour enrichir les données ou automatiser certaines actions. Le système doit offrir des mécanismes flexibles d'intégration bidirectionnelle tout en préservant la sécurité des données.
+        BPLR-T80: Créer le système de notification par webhook Description: Développer un mécanisme permettant d'envoyer des notifications d'événements (nouvelle entrée d'humeur, seuils atteints, etc.) à des URLs externes définies par l'utilisateur ou des intégrations tierces.
+            BPLR-ST80.1: Implémenter le modèle de données des webhooks
+            BPLR-ST80.2: Développer le service d'envoi de notifications
+            BPLR-ST80.3: Créer le système de retry et gestion des échecs
+            BPLR-ST80.4: Mettre en place la sécurisation des payloads
+        BPLR-T81: Implémenter la gestion des abonnements webhook Description: Créer les fonctionnalités permettant aux utilisateurs et applications tierces de gérer leurs abonnements aux différents types d'événements du système.
+            BPLR-ST81.1: Développer l'interface de gestion des abonnements
+            BPLR-ST81.2: Créer la logique de filtrage des événements
+            BPLR-ST81.3: Implémenter la validation des endpoints
+            BPLR-ST81.4: Mettre en place les quotas et limites de notification
+        BPLR-T82: Concevoir et implémenter l'interface de configuration des intégrations Description: Créer une interface utilisateur intuitive permettant la découverte, configuration et gestion des intégrations tierces disponibles.
+            BPLR-ST82.1: Concevoir les maquettes de l'interface d'intégrations
+            BPLR-ST82.2: Développer le catalogue d'intégrations disponibles
+            BPLR-ST82.3: Créer les assistants de configuration par service
+            BPLR-ST82.4: Implémenter les indicateurs de statut et santé
+        BPLR-T83: Créer l'intégration avec les plateformes de santé populaires Description: Développer des connecteurs spécifiques pour intégrer des données provenant des principales plateformes de santé et bien-être (Apple Health, Google Fit, Fitbit, etc.).
+            BPLR-ST83.1: Implémenter l'intégration avec Apple Health
+            BPLR-ST83.2: Développer le connecteur Google Fit
+            BPLR-ST83.3: Créer l'intégration Fitbit
+            BPLR-ST83.4: Mettre en place la synchronisation bidirectionnelle
+
+Épopée 8: Application Mobile
+
+BPLR-E8: Créer une application mobile multi-plateformes
+
+Description: Cette épopée couvre la conception et le développement d'une application mobile complète pour le suivi d'humeur, compatible avec iOS et Android. Elle inclut l'adaptation de l'expérience utilisateur pour mobile, la gestion du mode hors-ligne, et l'implémentation de fonctionnalités spécifiques aux appareils mobiles, offrant une expérience fluide et cohérente sur tous les appareils.
+Récits Utilisateur:
+
+    BPLR-US22: En tant qu'utilisateur, je veux une application mobile pour suivre mon humeur en déplacement Description: L'utilisateur doit disposer d'une application mobile intuitive et performante lui permettant d'accéder à toutes les fonctionnalités essentielles du suivi d'humeur sur son smartphone. L'application doit offrir une expérience optimisée pour les appareils mobiles tout en maintenant la cohérence avec la version web.
+        BPLR-T84: Configurer la structure du projet multi-plateformes Description: Mettre en place l'architecture technique du projet mobile permettant de partager efficacement le code entre les plateformes iOS et Android tout en respectant leurs spécificités.
+            BPLR-ST84.1: Configurer le projet React Native / Flutter
+            BPLR-ST84.2: Mettre en place l'architecture de navigation
+            BPLR-ST84.3: Implémenter la gestion d'état et stockage
+            BPLR-ST84.4: Configurer l'intégration continue pour mobile
+        BPLR-T85: Implémenter le flux d'authentification mobile Description: Développer un processus d'authentification sécurisé et fluide adapté aux contraintes des appareils mobiles, incluant les méthodes d'authentification biométriques si disponibles.
+            BPLR-ST85.1: Créer les écrans de connexion et inscription
+            BPLR-ST85.2: Développer la gestion sécurisée des tokens
+            BPLR-ST85.3: Implémenter l'authentification biométrique
+            BPLR-ST85.4: Mettre en place la persistance de session
+        BPLR-T86: Créer les composants UI responsifs Description: Développer une bibliothèque de composants d'interface optimisés pour les appareils mobiles, s'adaptant aux différentes tailles d'écran et respectant les conventions des plateformes.
+            BPLR-ST86.1: Concevoir la charte graphique mobile
+            BPLR-ST86.2: Développer les composants de saisie adaptés au tactile
+            BPLR-ST86.3: Créer les visualisations optimisées pour petit écran
+            BPLR-ST86.4: Implémenter les animations et transitions fluides
+        BPLR-T87: Implémenter la navigation spécifique au mobile Description: Créer une structure de navigation intuitive et efficace, respectant les conventions des plateformes mobiles tout en facilitant l'accès aux fonctionnalités essentielles.
+            BPLR-ST87.1: Concevoir l'architecture de navigation
+            BPLR-ST87.2: Développer la barre de navigation principale
+            BPLR-ST87.3: Créer les transitions entre écrans
+            BPLR-ST87.4: Implémenter les raccourcis et gestes
+    BPLR-US23: En tant qu'utilisateur, je veux ajouter des entrées d'humeur hors ligne quand je n'ai pas internet Description: L'utilisateur doit pouvoir continuer à utiliser les fonctionnalités essentielles de l'application mobile même sans connexion internet. Le système doit sauvegarder localement les données et les synchroniser automatiquement lorsque la connexion est rétablie.
+        BPLR-T88: Implémenter le stockage de données local Description: Développer un système robuste de persistance locale des données sur l'appareil mobile pour permettre l'utilisation hors-ligne de l'application.
+            BPLR-ST88.1: Créer le schéma de base de données locale
+            BPLR-ST88.2: Développer le système de cache pour les données de référence
+            BPLR-ST88.3: Implémenter la gestion des entrées créées hors-ligne
+            BPLR-ST88.4: Mettre en place le chiffrement des données sensibles
+        BPLR-T89: Créer le mécanisme de synchronisation des données Description: Développer un système intelligent de synchronisation bidirectionnelle des données entre l'appareil mobile et le serveur lors du rétablissement de la connexion.
+            BPLR-ST89.1: Implémenter la détection d'état de connexion
+            BPLR-ST89.2: Développer la file d'attente des opérations à synchroniser
+            BPLR-ST89.3: Créer la logique de synchronisation différentielle
+            BPLR-ST89.4: Mettre en place les stratégies de gestion de bande passante
+        BPLR-T90: Gérer la résolution des conflits Description: Développer des mécanismes intelligents pour détecter et résoudre les conflits potentiels lors de la synchronisation des données modifiées en parallèle.
+            BPLR-ST90.1: Implémenter la détection de conflits
+            BPLR-ST90.2: Développer les stratégies de résolution automatique
+            BPLR-ST90.3: Créer l'interface de résolution manuelle
+            BPLR-ST90.4: Mettre en place la journalisation des conflits
+        BPLR-T91: Concevoir les indicateurs de mode hors-ligne Description: Créer des éléments d'interface utilisateur clairs indiquant l'état de connexion et de synchronisation des données pour maintenir la transparence avec l'utilisateur.
+            BPLR-ST91.1: Concevoir les indicateurs d'état de connexion
+            BPLR-ST91.2: Développer les badges pour données non synchronisées
+            BPLR-ST91.3: Créer les notifications de synchronisation
+            BPLR-ST91.4: Implémenter l'écran de statut de synchronisation détaillé
+    BPLR-US24: En tant qu'utilisateur, je veux recevoir des rappels pour enregistrer mon humeur Description: L'utilisateur doit pouvoir configurer et recevoir des notifications régulières lui rappelant d'enregistrer son humeur. Ces rappels doivent être personnalisables en termes de fréquence, horaire et contenu pour s'adapter aux préférences et habitudes individuelles.
+        BPLR-T92: Implémenter les notifications locales Description: Développer le système de notifications natives sur l'appareil mobile pour les rappels d'enregistrement d'humeur, respectant les spécificités de chaque plateforme.
+            BPLR-ST92.1: Configurer les permissions de notification
+            BPLR-ST92.2: Développer le système de planification de notifications
+            BPLR-ST92.3: Créer les templates de contenu de notification
+            BPLR-ST92.4: Implémenter les actions rapides depuis les notifications
+        BPLR-T93: Créer la fonctionnalité de planification des rappels Description: Développer un système flexible permettant aux utilisateurs de définir des schémas personnalisés de rappels selon différentes fréquences et conditions.
+            BPLR-ST93.1: Implémenter la planification quotidienne
+            BPLR-ST93.2: Développer les schémas hebdomadaires
+            BPLR-ST93.3: Créer la logique de rappels conditionnels
+            BPLR-ST93.4: Mettre en place la gestion des fuseaux horaires
+        BPLR-T94: Concevoir et implémenter l'interface des paramètres de rappel Description: Créer une interface intuitive permettant aux utilisateurs de configurer facilement leurs préférences de notification et rappels d'humeur.
+            BPLR-ST94.1: Concevoir les maquettes de l'écran de paramètres
+            BPLR-ST94.2: Développer les contrôles de sélection d'horaire
+            BPLR-ST94.3: Créer l'interface de configuration des répétitions
+            BPLR-ST94.4: Implémenter la personnalisation des messages
+        BPLR-T95: Ajouter les suggestions intelligentes de rappels Description: Développer un système d'intelligence qui suggère automatiquement des horaires optimaux de rappel basés sur les habitudes de l'utilisateur et l'analyse des données passées.
+            BPLR-ST95.1: Créer l'algorithme d'analyse des moments d'utilisation
+            BPLR-ST95.2: Développer la détection des schémas d'oubli
+            BPLR-ST95.3: Implémenter les suggestions adaptatives
+            BPLR-ST95.4: Mettre en place l'interface de suggestions
+
+Épopée 9: Infrastructure et DevOps
+
+BPLR-E9: Mettre en place une infrastructure robuste et un pipeline de déploiement
+
+Description: Cette épopée couvre la mise en place de l'infrastructure technique complète et des processus DevOps nécessaires au déploiement, à la maintenance et au monitoring de l'application. Elle inclut l'automatisation des builds et tests, les configurations d'environnement, et les outils de surveillance, garantissant la stabilité, la performance et la sécurité du système en production.
+Récits Utilisateur:
+
+    BPLR-US25: En tant que développeur, je veux des pipelines CI/CD automatisés Description: Les développeurs doivent disposer de pipelines d'intégration et déploiement continus entièrement automatisés pour accélérer les cycles de développement tout en garantissant la qualité du code. Ces pipelines doivent couvrir tous les aspects du processus, de la compilation aux tests jusqu'au déploiement.
+        BPLR-T96: Configurer l'automatisation des builds Description: Mettre en place un système automatisé de construction du logiciel à chaque modification du code source, avec vérification de la qualité et génération des artefacts de déploiement.
+            BPLR-ST96.1: Configurer le build du backend .NET
+            BPLR-ST96.2: Mettre en place le build du frontend
+            BPLR-ST96.3: Implémenter la construction des applications mobiles
+            BPLR-ST96.4: Configurer le stockage des artefacts
+        BPLR-T97: Mettre en place l'automatisation des tests Description: Configurer l'exécution automatique des différents types de tests (unitaires, intégration, UI) à chaque modification du code pour garantir la non-régression et la qualité globale.
+            BPLR-ST97.1: Configurer l'exécution des tests unitaires
+            BPLR-ST97.2: Mettre en place les tests d'intégration
+            BPLR-ST97.3: Implémenter les tests d'interface utilisateur
+            BPLR-ST97.4: Configurer la couverture de code et rapports
+        BPLR-T98: Créer les pipelines de déploiement Description: Développer des pipelines automatisés pour le déploiement des différentes composantes de l'application dans les environnements de développement, test et production.
+            BPLR-ST98.1: Configurer le pipeline de déploiement backend
+            BPLR-ST98.2: Mettre en place le déploiement frontend
+            BPLR-ST98.3: Créer le pipeline de déploiement mobile
+            BPLR-ST98.4: Implémenter les stratégies de rollback
+        BPLR-T99: Implémenter les configurations spécifiques aux environnements Description: Développer un système flexible de configuration permettant d'adapter automatiquement les paramètres de l'application selon l'environnement de déploiement.
+            BPLR-ST99.1: Créer les configurations d'environnement de développement
+            BPLR-ST99.2: Mettre en place les configurations de test
+            BPLR-ST99.3: Développer les configurations de production
+            BPLR-ST99.4: Implémenter la gestion sécurisée des secrets
+    BPLR-US26: En tant qu'administrateur système, je veux un monitoring complet Description: Les administrateurs système doivent disposer d'outils de surveillance complets permettant de suivre en temps réel l'état, les performances et la sécurité de l'application. Ces outils doivent faciliter la détection proactive des problèmes potentiels avant qu'ils n'affectent les utilisateurs.
+        BPLR-T100: Implémenter la journalisation des applications Description: Mettre en place un système complet de journalisation à travers toutes les couches de l'application, avec agrégation centralisée et analyse des logs.
+            BPLR-ST100.1: Configurer la journalisation structurée
+            BPLR-ST100.2: Mettre en place l'agrégation de logs centralisée
+            BPLR-ST100.3: Implémenter les niveaux de verbosité adaptables
+            BPLR-ST100.4: Développer la rotation et rétention des logs
+        BPLR-T101: Mettre en place le monitoring de performance Description: Configurer des outils de surveillance des performances de l'application permettant de mesurer et analyser les temps de réponse, l'utilisation des ressources et les goulots d'étranglement potentiels.
+            BPLR-ST101.1: Implémenter le monitoring des performances serveur
+            BPLR-ST101.2: Configurer la surveillance des temps de réponse API
+            BPLR-ST101.3: Mettre en place le monitoring des performances client
+            BPLR-ST101.4: Développer les tableaux de bord de performance
+        BPLR-T102: Créer les endpoints de vérification de santé Description: Développer des endpoints et mécanismes standardisés permettant de vérifier l'état de santé des différents composants de l'application pour faciliter la détection des problèmes.
+            BPLR-ST102.1: Implémenter les health checks du backend
+            BPLR-ST102.2: Configurer les vérifications de dépendances externes
+            BPLR-ST102.3: Mettre en place les contrôles de disponibilité
+            BPLR-ST102.4: Développer le dashboard de statut du système
+        BPLR-T103: Implémenter le système d'alertes Description: Configurer un système d'alertes intelligent capable de détecter les anomalies et problèmes potentiels, et de notifier proactivement les administrateurs via différents canaux.
+            BPLR-ST103.1: Définir les seuils et règles d'alerte
+            BPLR-ST103.2: Configurer les canaux de notification (email, SMS, Slack)
+            BPLR-ST103.3: Implémenter les alertes basées sur l'intelligence artificielle
+            BPLR-ST103.4: Développer les mécanismes d'escalade
+    BPLR-US27: En tant qu'ingénieur DevOps, je veux une infrastructure en tant que code Description: Les ingénieurs DevOps doivent pouvoir gérer l'ensemble de l'infrastructure comme du code versionné, permettant une automatisation complète du provisionnement, de la configuration et de la mise à jour des environnements. Cette approche garantit la reproductibilité et la fiabilité des déploiements.
+        BPLR-T104: Créer les scripts de migration de base de données Description: Développer un système robuste de gestion des migrations de base de données permettant d'appliquer les changements de schéma de manière contrôlée et automatisée.
+            BPLR-ST104.1: Configurer Entity Framework Core Migrations
+            BPLR-ST104.2: Implémenter les scripts de migration idempotents
+            BPLR-ST104.3: Développer le mécanisme de rollback
+            BPLR-ST104.4: Mettre en place la validation des migrations
+        BPLR-T105: Implémenter la conteneurisation avec Docker Description: Mettre en place la conteneurisation de tous les composants de l'application pour garantir la cohérence entre les environnements et faciliter le déploiement.
+            BPLR-ST105.1: Créer les Dockerfiles pour le backend
+            BPLR-ST105.2: Configurer les images Docker du frontend
+            BPLR-ST105.3: Développer les fichiers docker-compose
+            BPLR-ST105.4: Optimiser les images pour la production
+        BPLR-T106: Mettre en place la configuration Kubernetes Description: Développer les manifestes Kubernetes nécessaires pour orchestrer le déploiement et la gestion des conteneurs dans différents environnements.
+            BPLR-ST106.1: Créer les déploiements et services Kubernetes
+            BPLR-ST106.2: Configurer les ingress et règles de routage
+            BPLR-ST106.3: Implémenter les politiques de sécurité
+            BPLR-ST106.4: Développer les HorizontalPodAutoscalers
+        BPLR-T107: Créer les politiques de mise à l'échelle automatique Description: Configurer des mécanismes d'auto-scaling permettant d'adapter automatiquement les ressources allouées en fonction de la charge pour optimiser les performances et les coûts.
+            BPLR-ST107.1: Définir les métriques de scaling
+            BPLR-ST107.2: Configurer le scaling horizontal
+            BPLR-ST107.3: Implémenter les politiques de scaling vertical
+            BPLR-ST107.4: Développer les stratégies de préchargement
+
+

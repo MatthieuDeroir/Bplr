@@ -1,0 +1,2 @@
+Propose use case diagram, sequence diagram etc... MCD/MLD/MPD 
+Propose full documentation and project architecture and organization, split correctly each file and concern and a full JIRA with Epics and Tasks
